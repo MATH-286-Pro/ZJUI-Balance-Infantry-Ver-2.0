@@ -2,9 +2,9 @@
 
 
 ## 简介 Introduction
-<center>
-<img src = "Pictures/chassis-Gen.2.0.png" width = "60%">
-</center>
+<p align="center">
+  <img src="Pictures/chassis-Gen.2.0.png" width="60%">
+</p>
 
 
 ## 工具链配置
