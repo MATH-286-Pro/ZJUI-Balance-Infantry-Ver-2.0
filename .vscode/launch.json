@@ -1,0 +1,53 @@
+{
+  "configurations": [
+    {
+      "showDevDebugOutput": "parsed",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}\\build\\ZJUI-Balance-2.elf",
+      "name": "Debug-DAP-Link",
+      "request": "launch",
+      "preLaunchTask": "buildEmbeddedTargets",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "device": "stm32f407",
+      "configFiles": [
+        "openocd_dap.cfg"
+      ],
+      "armToolchainPath": "D:/Software-B/Tool-chain/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin"
+    },
+    {
+      "showDevDebugOutput": "parsed",
+      "cwd": "${workspaceRoot}",
+      "executable": "${workspaceRoot}\\build\\ZJUI-Balance-2.elf",
+      "name": "Debug-ST-Link",
+      "request": "launch",
+      "preLaunchTask": "buildEmbeddedTargets",
+      "type": "cortex-debug",
+      "servertype": "openocd",
+      "device": "stm32f407",
+      "configFiles": [
+        "openocd_stlink.cfg"
+      ],
+      "armToolchainPath": "D:/Software-B/Tool-chain/Arm GNU Toolchain arm-none-eabi/13.3 rel1/bin"
+    },
+    {
+      "name": "C/C++ Runner: Debug Session",
+      "type": "cppdbg",
+      "request": "launch",
+      "args": [],
+      "stopAtEntry": false,
+      "externalConsole": true,
+      "cwd": "d:/DeskTop/Embedded/RM/RM-ZJUI-RC-Test/module",
+      "program": "d:/DeskTop/Embedded/RM/RM-ZJUI-RC-Test/module/build/Debug/outDebug",
+      "MIMode": "gdb",
+      "miDebuggerPath": "gdb",
+      "setupCommands": [
+        {
+          "description": "Enable pretty-printing for gdb",
+          "text": "-enable-pretty-printing",
+          "ignoreFailures": true
+        }
+      ]
+    }
+  ]
+}
