@@ -116,6 +116,8 @@ int main(void)
   dm_motor_init();                           HAL_Delay(10);                // 电机 1+2 初始化
   dm_motor_enable(&hcan1, &motor[Motor1]);   HAL_Delay(10);                // 电机 1 使能
 	dm_motor_enable(&hcan1, &motor[Motor2]);   HAL_Delay(10);                // 电机 2 使能
+	dm_motor_enable(&hcan1, &motor[Motor3]);   HAL_Delay(10);                // 电机 3 使能
+	dm_motor_enable(&hcan1, &motor[Motor4]);   HAL_Delay(10);                // 电机 4 使能
 
   HAL_GPIO_WritePin(GPIOH, GPIO_PIN_11, GPIO_PIN_RESET);  // 灭灯
   /* USER CODE END 2 */
@@ -141,9 +143,22 @@ int main(void)
     // // 速度模式
 		// mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, 0, rc.LY*8.0f, 0, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
 		// mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, 0, rc.RY*8.0f, 0, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
-    // 位置模式
-		mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, rc.LY*2*PI, 0, 10, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
-		mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, rc.RY*2*PI, 0, 10, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
+    if (rc.sw1 == SW_UP) {
+      // 位置模式
+      mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, 0, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, 0, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor3], motor[Motor3].id, 0, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor4], motor[Motor4].id, 0, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+    }
+    if (rc.sw1 == SW_MID) {
+      // 位置模式
+      mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, -rc.LY*PI/3, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, +rc.LY*PI/3, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor3], motor[Motor3].id, +rc.LY*PI/3, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+      mit_ctrl(&hcan1, &motor[Motor4], motor[Motor4].id, -rc.LY*PI/3, 0, 15, 1, 0);  HAL_Delay(2);  // Pos Vel KP KD Torque
+    }
+
+
   }
   /* USER CODE END 3 */
 }

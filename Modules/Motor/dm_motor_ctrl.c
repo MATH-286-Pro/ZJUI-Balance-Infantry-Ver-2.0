@@ -50,6 +50,32 @@ void dm_motor_init(void)
 	motor[Motor2].tmp.PMAX		= 12.5f;
 	motor[Motor2].tmp.VMAX		= 30.0f;
 	motor[Motor2].tmp.TMAX		= 10.0f;
+
+	// 设置Motor3的电机信息
+	motor[Motor3].id		    = 0x03;
+	motor[Motor3].mst_id 		= 0x11;
+	motor[Motor3].tmp.read_flag = 1;
+	motor[Motor3].ctrl.mode 	= mit_mode;
+	motor[Motor3].ctrl.vel_set 	= 1.0f;
+	motor[Motor3].ctrl.pos_set 	= 10.0f;
+	motor[Motor3].ctrl.cur_set 	= 0.03f;
+	motor[Motor3].ctrl.kd_set 	= 1.0f;
+	motor[Motor3].tmp.PMAX		= 12.5f;
+	motor[Motor3].tmp.VMAX		= 30.0f;
+	motor[Motor3].tmp.TMAX		= 10.0f;
+
+	// 设置Motor4的电机信息
+	motor[Motor4].id 			= 0x04;
+	motor[Motor4].mst_id 		= 0x11;
+	motor[Motor4].tmp.read_flag = 1;
+	motor[Motor4].ctrl.mode 	= mit_mode;
+	motor[Motor4].ctrl.vel_set 	= 1.0f;
+	motor[Motor4].ctrl.pos_set 	= 10.0f;
+	motor[Motor4].ctrl.cur_set 	= 0.03f;
+	motor[Motor4].ctrl.kd_set 	= 1.0f;
+	motor[Motor4].tmp.PMAX		= 12.5f;
+	motor[Motor4].tmp.VMAX		= 30.0f;
+	motor[Motor4].tmp.TMAX		= 10.0f;
 }
 /**
 ************************************************************************
