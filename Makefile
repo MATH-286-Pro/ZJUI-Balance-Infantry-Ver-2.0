@@ -91,9 +91,10 @@ Middlewares/ST/STM32_USB_Device_Library/Core/Src/usbd_ioreq.c \
 Middlewares/ST/STM32_USB_Device_Library/Class/CDC/Src/usbd_cdc.c \
 Core/Src/sysmem.c \
 Core/Src/syscalls.c \
-Motor/bsp_can.c \
-Motor/dm_motor_ctrl.c \
-Motor/dm_motor_drv.c
+Modules/Motor/bsp_can.c \
+Modules/Motor/dm_motor_ctrl.c \
+Modules/Motor/dm_motor_drv.c \
+Modules/RC/rc.c
 
 # ASM sources
 ASM_SOURCES =  \
@@ -167,7 +168,8 @@ C_INCLUDES =  \
 -IDrivers/CMSIS/Device/ST/STM32F4xx/Include \
 -IDrivers/CMSIS/Include \
 -IMiddlewares/ST/ARM/DSP/Inc \
--IMotor
+-IModules/Motor \
+-IModules/RC
 
 
 # compile gcc flags
@@ -239,7 +241,16 @@ $(BUILD_DIR):
 #######################################
 clean:
 	-rm -fR $(BUILD_DIR)
-  
+
+#######################################
+# Download
+#######################################
+flash:
+	openocd \
+		-f interface/cmsis-dap.cfg \
+		-f target/stm32f4x.cfg \
+		-c "program build/$(TARGET).elf verify reset exit"
+
 #######################################
 # dependencies
 #######################################

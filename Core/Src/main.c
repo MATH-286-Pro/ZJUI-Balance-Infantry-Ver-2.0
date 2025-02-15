@@ -33,6 +33,7 @@
 #include "bsp_can.h"
 #include "dm_motor_drv.h"
 #include "dm_motor_ctrl.h"
+#include "rc.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -42,7 +43,7 @@
 
 /* Private define ------------------------------------------------------------*/
 /* USER CODE BEGIN PD */
-
+#define PI (3.1415927f)
 /* USER CODE END PD */
 
 /* Private macro -------------------------------------------------------------*/
@@ -53,6 +54,7 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
+extern RC_Type rc;        // 遥控器数据
 
 /* USER CODE END PV */
 
@@ -109,6 +111,7 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
+  Dbus_Init();     // 遥控器初始化
   bsp_can_init();                            HAL_Delay(1);                 // CAN 初始化，包含 HAL_CAN_Start(&hcan1) 代码，没有该代码无法发送 CAN 数据
   dm_motor_init();                           HAL_Delay(10);                // 电机 1+2 初始化
   dm_motor_enable(&hcan1, &motor[Motor1]);   HAL_Delay(10);                // 电机 1 使能
@@ -135,9 +138,12 @@ int main(void)
 
     // HAL_GPIO_TogglePin(GPIOH, GPIO_PIN_11);  // 亮灯测试
     // HAL_Delay(500);
-		mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, 0, 1, 0, 1, 0);  HAL_Delay(500);  // Pos Vel KP KD Torque
-		mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, 0, 1, 0, 1, 0);  HAL_Delay(500);  // Pos Vel KP KD Torque
-
+    // // 速度模式
+		// mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, 0, rc.LY*8.0f, 0, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
+		// mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, 0, rc.RY*8.0f, 0, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
+    // 位置模式
+		mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, rc.LY*2*PI, 0, 10, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
+		mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, rc.RY*2*PI, 0, 10, 1, 0);  HAL_Delay(3);  // Pos Vel KP KD Torque
   }
   /* USER CODE END 3 */
 }
