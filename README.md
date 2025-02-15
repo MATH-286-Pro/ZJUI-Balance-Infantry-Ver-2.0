@@ -35,8 +35,19 @@
   - J8009-2EC 电机固件烧录 V3 成功
   - 发现达妙 Gitee 电机固件库版本非常混乱
   - 注意 V3 版本的 8009 只能烧录 V3 版本的固件
+  - 同时尝试 CLion
 
 ## **Project Log**
 - **2024.11.19 Tuesday**
   - complete assembling chassis, waiting for joint motors CAN communication test  
+- **2024.12.19 Thursday**
+  - motor firmware upgrade failed, later found that the reason was that the V2 version of the firmware was burned
+  - calibration of the motor with another normal firmware was successful
+  - found that setting the timeout very easily causes the upper computer to control the motor to timeout
+  - causing the motor red light to flash
+- **2024.12.20 Friday**
+  - J8009-2EC motor firmware upgrade to V3 successful
+  - found that the version of the motor firmware library on Gitee is very messy
+  - note that the V3 version of 8009 can only burn the V3 version of the firmware
+  - also try CLion
 
