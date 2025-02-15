@@ -30,7 +30,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "bsp_can.h"
+#include "dm_motor_drv.h"
+#include "dm_motor_ctrl.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -63,7 +65,40 @@ void MX_FREERTOS_Init(void);
 
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
+void CAN_Debug_Send(void)
+{
+    // TxHeader 用于配置发送帧的信息
+    CAN_TxHeaderTypeDef TxHeader;
+    // 数据数组
+    uint8_t TxData[8] = {0};
+    // 发消息时需要用到的邮箱标志
+    uint32_t TxMailbox;
 
+    // 示例：标准帧，ID = 0x123
+    TxHeader.StdId = 0x123;
+    TxHeader.ExtId = 0;                    // 若使用扩展帧则需要修改这里和 IDE 字段
+    TxHeader.IDE   = CAN_ID_STD;           // 标准帧
+    TxHeader.RTR   = CAN_RTR_DATA;         // 数据帧
+    TxHeader.DLC   = 8;                    // 数据长度 0~8 字节
+    TxHeader.TransmitGlobalTime = DISABLE; // 一般设为 DISABLE
+
+    // 随意填充一些测试内容，这里写了个 0xAA, 0xBB... 你也可以改成其他值
+    TxData[0] = 0xAA;
+    TxData[1] = 0xBB;
+    TxData[2] = 0xCC;
+    TxData[3] = 0xDD;
+    TxData[4] = 0x11;
+    TxData[5] = 0x22;
+    TxData[6] = 0x33;
+    TxData[7] = 0x44;
+
+    // 通过 HAL_CAN_AddTxMessage() 函数发送帧
+    if (HAL_CAN_AddTxMessage(&hcan1, &TxHeader, TxData, &TxMailbox) != HAL_OK)
+    {
+        // 这里可以添加错误处理，比如点灯报警等
+        HAL_GPIO_WritePin(GPIOH, GPIO_PIN_11, GPIO_PIN_SET);  // 亮灯
+    }
+}
 /* USER CODE END 0 */
 
 /**
@@ -107,7 +142,11 @@ int main(void)
   MX_USART1_UART_Init();
   MX_USART6_UART_Init();
   /* USER CODE BEGIN 2 */
+  // dm_motor_init();                           HAL_Delay(10);                // 电机 1+2 初始化
+  // dm_motor_enable(&hcan1, &motor[Motor1]);   HAL_Delay(10);                // 电机 1 使能
+	// dm_motor_enable(&hcan1, &motor[Motor2]);   HAL_Delay(10);                // 电机 2 使能
 
+  HAL_GPIO_WritePin(GPIOH, GPIO_PIN_11, GPIO_PIN_RESET);  // 灭灯
   /* USER CODE END 2 */
 
   /* Call init function for freertos objects (in cmsis_os2.c) */
@@ -120,13 +159,22 @@ int main(void)
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
+  HAL_CAN_Init(&hcan1);         // CAN 初始化
+  HAL_CAN_Start(&hcan1);        // 必须调用 HAL_CAN_Start()
   while (1)
   {
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_GPIO_TogglePin(GPIOH, GPIO_PIN_11);
-    HAL_Delay(500);
+
+    // HAL_GPIO_TogglePin(GPIOH, GPIO_PIN_11);  // 亮灯测试
+    // HAL_Delay(500);
+		// mit_ctrl(&hcan1, &motor[Motor1], motor[Motor1].id, 0, 1, 0, 1, 0);  HAL_Delay(500);  // Pos Vel KP KD Torque
+		// mit_ctrl(&hcan1, &motor[Motor2], motor[Motor2].id, 0, 1, 0, 1, 0);  HAL_Delay(500);  // Pos Vel KP KD Torque
+
+
+    CAN_Debug_Send();
+    HAL_Delay(1000); // 1秒发一次
   }
   /* USER CODE END 3 */
 }
